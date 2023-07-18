@@ -18,25 +18,54 @@ const playAgainButton = document.querySelector (".play-again");
 const word = "magnolia";
 // test word before fetch is initiated
 
-
 const placeHolder = (word) => {
     placeholderArray = [];
     for (const letter of word) {
-        console.log(letter);
+        // console.log(letter);
         placeholderArray.push("●");
     }
     wordInProgress.innerText = placeholderArray.join("");
 };
-
 placeHolder(word);
 // function to add circle placeholders for the letters of the word until guessed
 
 guessButton.addEventListener ("click", function(e){
     e.preventDefault();
     const guess = guessForm.value;
-    console.log(guess);
     guessForm.value = "";
+    console.log(guess);
+    message.innerText= "";
 });
+
+
+const validatePlayerInput = (input) => {
+    const acceptedLetter = /[a-zA-Z]/;
+    // regular expression to only allow letters
+    if(input.length === 0) {
+        message.innerText = "Enter your first guess";
+    // if input is empty
+    } else if (input.length > 1) {
+        message.innerText = "Too many, let's stick to one at a time";
+    // no more than one letter can be entered at a time
+    } else if (!input.match(acceptedLetter)) {
+        message.innerText = "Words only have letters, try again";
+    // cannot enter character that doesn't match the regular expression
+    } else { 
+        return input;
+    // all conditions are met
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
 
 
 
