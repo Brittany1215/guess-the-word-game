@@ -6,7 +6,7 @@ const guessForm = document.querySelector (".letter");
 // text input where the player will guess a letter.
 const wordInProgress = document.querySelector (".word-in-progress");
 // empty paragraph where the word in progress will appear.
-const remainingGuesses = document.querySelector (".remaining");
+const remainingGuessesDisplay = document.querySelector (".remaining");
 // paragraph where the remaining guesses will display.
 const numGuessesLeft = document.querySelector (".remaining span");
 // span inside the paragraph where the remaining guesses will display.
@@ -15,10 +15,23 @@ const message = document.querySelector (".message");
 const playAgainButton = document.querySelector (".play-again");
 // hidden button that will appear prompting the player to play again.
 
-const word = "magnolia";
+let word = "magnolia";
 // test word before fetch is initiated
-let guessedLetters = [];
+const guessedLetters = [];
 // array to contain all the letters player guesses
+let remainingGuesses = 8;
+
+const getWord = async function(){
+   const response = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt"); 
+   const words = await response.text();
+   const wordArray = words.split("\n");
+//  turns data fetched into an array seperated by a newline //
+    const randomWord = Math.floor(Math.random() * wordArray.length);
+    word = wordArray[randomWord].trim();
+    placeHolder(word);
+};
+
+getWord();
 
 const placeHolder = function (word) {
     const placeholderArray = [];
@@ -74,7 +87,8 @@ const makeGuess = function (letter) {
     } else {
         guessedLetters.push(letter);
         console.log(guessedLetters);
-        displayGuessedLetters (guessedLetters);
+        countGuessesRemaining (letter);
+        displayGuessedLetters ();
         updatedWordInProgress(guessedLetters);
     }
 };
@@ -101,9 +115,26 @@ const updatedWordInProgress = function (guessedLetters) {
         } else {
             revealWord.push("●");
         }
-        console.log(revealWord);
+        // console.log(revealWord);
     }
+    wordInProgress.innerText = revealWord.join("");
     youWin();
+};
+
+ const countGuessesRemaining = function(guess) {
+    const wordUpper = word.toUpperCase();
+    if (!wordUpper.includes(guess)) {
+        message.innerText = `${guess} is not in this word, try again`;
+        remainingGuesses -= 1;
+    } else { 
+        message.innerText = `Yay, ${guess} is part of the word, keep going!`;
+    } if (remainingGuesses === 0) {
+        message.innerText = `Game over 😢 The word was ${word}`; 
+    } else if (remainingGuesses === 1) {
+        numGuessesLeft.innerText = `${remainingGuesses} guess`;
+    } else {
+        numGuessesLeft.innerText = `${remainingGuesses} guesses`;
+    }
 };
 
 const youWin = function () {
@@ -112,6 +143,14 @@ const youWin = function () {
     message.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
         }
 };
+// ● count and monitor player's remaining guesses with a function 
+// that displays a message indicating the remaining guesses, 
+// including no more guesses if the player runs out
+// ● create an async function to pull from a .txt file 
+// of 800 random words
+
+
+
 
 
 
