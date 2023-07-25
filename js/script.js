@@ -141,13 +141,34 @@ const youWin = function () {
     if (word.toUpperCase() === wordInProgress.innerText) {
     message.classList.add ("win");
     message.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
-        }
+       
+    startOver();
+}
 };
-// ● count and monitor player's remaining guesses with a function 
-// that displays a message indicating the remaining guesses, 
-// including no more guesses if the player runs out
-// ● create an async function to pull from a .txt file 
-// of 800 random words
+
+const startOver = function () {
+    guessButton.classList.add ("hide");
+    remainingGuessesDisplay.classList.add("hide");
+    guessedLettersElement.classList.add("hide");
+    playAgainButton.classList.remove("hide");
+};
+
+playAgainButton.addEventListener ("click", function() {
+    message.classList.remove("win");
+    message.innerText = "";
+    guessedLettersElement.innerText = "";
+    remainingGuesses = 8;
+    guessedLetters = [];
+    numGuessesLeft.innerText = `${remainingGuesses} guesses`;
+    guessButton.classList.remove("hide");
+    remainingGuessesDisplay.classList.remove("hide");
+    guessedLettersElement.classList.remove("hide");
+    playAgainButton.classList.add("hide");
+
+    getWord();
+});
+
+
 
 
 
