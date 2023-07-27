@@ -17,7 +17,7 @@ const playAgainButton = document.querySelector (".play-again");
 
 let word = "magnolia";
 // test word before fetch is initiated
-const guessedLetters = [];
+let guessedLetters = [];
 // array to contain all the letters player guesses
 let remainingGuesses = 8;
 
@@ -129,7 +129,8 @@ const updatedWordInProgress = function (guessedLetters) {
     } else { 
         message.innerText = `Yay, ${guess} is part of the word, keep going!`;
     } if (remainingGuesses === 0) {
-        message.innerText = `Game over 😢 The word was ${word}`; 
+        message.innerText = `Game over 😢 The word was ${word}`;
+        startOver();
     } else if (remainingGuesses === 1) {
         numGuessesLeft.innerText = `${remainingGuesses} guess`;
     } else {
@@ -140,7 +141,7 @@ const updatedWordInProgress = function (guessedLetters) {
 const youWin = function () {
     if (word.toUpperCase() === wordInProgress.innerText) {
     message.classList.add ("win");
-    message.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
+    message.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>`;
        
     startOver();
 }
@@ -164,7 +165,7 @@ playAgainButton.addEventListener ("click", function() {
     remainingGuessesDisplay.classList.remove("hide");
     guessedLettersElement.classList.remove("hide");
     playAgainButton.classList.add("hide");
-
+    
     getWord();
 });
 
